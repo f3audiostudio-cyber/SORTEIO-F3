@@ -666,28 +666,22 @@ async function(){
        NÃO COLOCAR "await" ANTES DE const.
     ===================================== */
 
-    const url =
-      API_URL +
-      "?action=reserve" +
-      "&numbers=" +
-      encodeURIComponent(
-        nums.join(",")
-      ) +
-      "&name=" +
-      encodeURIComponent(
-        name
-      ) +
-      "&whatsapp=" +
-      encodeURIComponent(
-        phone
-      );
-
-
-    console.log(
-      "URL RESERVE:",
-      url
-    );
-
+   const response =
+  await fetch(
+    API_URL,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "reserve",
+        numbers: nums,
+        name: name,
+        whatsapp: phone
+      })
+    }
+  );
 
     /* =====================================
        ENVIA PARA O APPS SCRIPT
