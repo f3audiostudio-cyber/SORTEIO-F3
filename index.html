@@ -300,6 +300,23 @@
     </div>
 
   </div>
+  <div id="soldout" style="
+  display:none;
+  text-align:center;
+  margin-top:20px;
+  padding:20px;
+  background:#2a1111;
+  border:2px solid #ef4444;
+  border-radius:14px;
+  color:#fff;
+  font-size:20px;
+  font-weight:bold;
+">
+  🎟️ SORTEIO ENCERRADO!<br>
+  <span style="font-size:16px;color:#ff9999;">
+    Todos os números já foram reservados ou pagos.
+  </span>
+</div>
 
 
   <div class="bottom">
@@ -376,6 +393,31 @@
 
     const container =
       $("numbers");
+    const availableCount =
+      numbers.filter(
+        item =>
+          String(item.status || "available") === "available"
+      ).length;
+
+    const soldout =
+      $("soldout");
+
+    const go =
+      $("go");
+
+    if(availableCount === 0){
+
+      soldout.style.display = "block";
+      go.disabled = true;
+      go.textContent = "🎟️ SORTEIO ENCERRADO";
+
+    }else{
+
+      soldout.style.display = "none";
+      go.disabled = false;
+      go.textContent = "📲 QUERO PARTICIPAR";
+
+    }
 
     container.innerHTML = "";
 
