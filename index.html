@@ -499,68 +499,62 @@
 
     try{
 
-      $("status").textContent =
-        "Carregando números...";
+    $("status").textContent =
+      "Carregando números...";
 
-
-      const response =
-        await fetch(
-          API_URL +
-          "?action=list&t=" +
-          Date.now(),
-          {
-            method:"GET",
-            cache:"no-store"
-          }
-        );
-
-
-      const data =
-        await response.json();
-
-
-      console.log(
-        "Resposta LIST:",
-        data
-      );
-
-
-      if(
-        !data ||
-        !Array.isArray(
-          data.numbers
-        )
-      ){
-
-        throw new Error(
-          "Resposta inválida da API"
-        );
-
+    const response = await fetch(
+      API_URL + "?action=list&t=" + Date.now(),
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-store",
+        redirect: "follow"
       }
+    );
 
-
-      render(
-        data.numbers
+    if (!response.ok) {
+      throw new Error(
+        "HTTP " + response.status
       );
-
-
-      $("status").textContent =
-        "";
-
-    }catch(error){
-
-      console.error(
-        "Erro ao carregar:",
-        error
-      );
-
-
-      $("status").textContent =
-        "Erro ao carregar os números. Atualize a página.";
-
     }
 
+    const text =
+      await response.text();
+
+    console.log(
+      "Resposta da API:",
+      text
+    );
+
+    const data =
+      JSON.parse(text);
+
+    if (
+      !data ||
+      !Array.isArray(data.numbers)
+    ) {
+      throw new Error(
+        "A API não retornou os números."
+      );
+    }
+
+    render(data.numbers);
+
+    $("status").textContent = "";
+
+  } catch(error) {
+
+    console.error(
+      "Erro ao carregar:",
+      error
+    );
+
+    $("status").textContent =
+      "Erro ao carregar os números. Atualize a página.";
+
   }
+
+}
 
 
   $("go").addEventListener(
